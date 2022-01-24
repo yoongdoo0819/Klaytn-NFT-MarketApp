@@ -1,1 +1,1 @@
-export * from "./constants.baobob";
+export * from "./constants.cypress";

@@ -12,9 +12,12 @@ function App() {
 
   //readNumber();
   //getBalance('0x860ab241a263ee4445d6ee2cb6cc5c9d2d5cbcff');
-  
+
   const onClickgetAddress = () => {
     KlipAPI.getAddress(setQrvalue);
+  };
+  const onClicksetNumber = () => {
+    KlipAPI.setNumber(2000, setQrvalue);
   };
 
   return (
@@ -27,6 +30,13 @@ function App() {
           }}
         >
           주소 가져오기
+        </button>
+        <button
+          onClick={() => {
+            onClicksetNumber();
+          }}
+        >
+          number 변경
         </button>
         <br></br>
         <br></br>

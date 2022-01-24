@@ -33,7 +33,9 @@ export const setNumber = (number, setQrvalue) => {
                     //console.log(res.data.expiration_time);
                     //console.log(res.data.result);
                     console.log(`[Result] ${JSON.stringify(res.data.result)}`);
-                    clearInterval(timerId);
+                    if (res.data.result.status === 'success') {
+                        clearInterval(timerId);
+                    }
                 }
             });
         }, 1000);

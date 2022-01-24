@@ -37,6 +37,28 @@ const getBalance = (address) => {
   })
 }
 
+const setNumber = async (newNumber) => {
+  
+  try {
+    // 사용할 account 설정
+    const privatekey = '직접 입력';
+    const deployer = caver.wallet.keyring.createFromPrivateKey(privatekey);
+    caver.wallet.add(deployer);
+
+    // 스마트 컨트랙트 실행 트랜잭션 전송
+    const receipt = await StorageContract.methods.store(newNumber).send({
+      from : deployer.address, // address
+      gas : "0x4bfd200"
+    })
+    
+    // 결과 확인
+    console.log(receipt);
+  } catch(e) {
+    console.log(`[ERROR_SET_NUMBER]${e}`);
+  }
+  
+}
+
 function App() {
   readNumber();
   getBalance('0x860ab241a263ee4445d6ee2cb6cc5c9d2d5cbcff');
@@ -45,6 +67,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <button title={'카운트 변경'} onClick={()=>{setNumber(100)}} />
         <p>
           Klaytn <code>src/App.js</code> and save to reload.
         </p>

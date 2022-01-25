@@ -14,13 +14,15 @@ const option = {
 }
 
 const caver = new Caver(new Caver.providers.HttpProvider("https://node-api.klaytnapi.com/v1/klaytn", option));
-const StorageContract = new caver.contract(StorageABI, STORAGE_CONTRACT_ADDRESS);
+const StorageContract = new caver.contract(StorageABI, STORAGE_CONTRACT_ADDRESS); // 실행할 컨트랙트의 인터페이스와 주소
 
+//  Storage 컨트랙트의 retrieve 함수 실행 (조회만 하므로 개인키 필요 없음)
 export const readNumber = async () => {
   const num = await StorageContract.methods.retrieve().call();
   console.log(num)
 }
 
+//  사용자가 보유한 KLAY 양 확인 
 export const getBalance = (address) => {
   
   return caver.rpc.klay.getBalance(address).then((response) => {
@@ -30,6 +32,7 @@ export const getBalance = (address) => {
   })
 }
 
+//  Storage 컨트랙트의 store 함수 실행 (write 작업이 요구되므로 함수 실행 호출자의 개인키 필요)
 export const setNumber = async (newNumber) => {
   
   try {

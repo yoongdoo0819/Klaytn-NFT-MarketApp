@@ -1,9 +1,11 @@
 import axios from "axios";
 import { STORAGE_CONTRACT_ADDRESS } from "../constants";
 
+//  Klip API 사용 시 필요한 정보
 const A2P_API_PREPARE_URL = "https://a2a-api.klipwallet.com/v2/a2a/prepare";
 const APP_NAME = "KLAY_MARKET";
 
+//  Klip API를 사용하여 Storage 컨트랙트의 store 함수 실행
 export const setNumber = (number, setQrvalue) => {
     
     axios.post(
@@ -42,7 +44,7 @@ export const setNumber = (number, setQrvalue) => {
     });
 };
 
-
+//  Klip API 요청자 자신의 블록체인 주소 조회
 export const getAddress = (setQrvalue) => {
     
     axios.post(

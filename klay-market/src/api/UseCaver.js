@@ -19,10 +19,30 @@ const NFTContract = new caver.contract(KIP17TokenABI, NFT_CONTRACT_ADDRESS);
 
 export const fetchCardsOf = async (address) => {
   //  fetch balance
+  const balance = await NFTContract.methods.balanceOf(address).call();
+  console.log(`[NFT Balance] ${balance}`);
 
   //  fetch token ids
-
+  const tokenIds = [];
+  for (let i=0; i<balance; i++) {
+    const id = await NFTContract.methods.tokenOfOwnerByIndex(address, i).call();
+    tokenIds.push(id);
+  }
   //  fetch token uris
+  const tokenUris = [];
+for (let i=0; i<balance; i++) {
+    const uri = await NFTContract.methods.tokenURI(tokenIds[i]).call();
+    tokenUris.push(uri);
+  }
+  console.log(`[tokenIds] ${tokenIds}`);
+  console.log(`[tokenUris] ${tokenUris}`);
+
+  const nfts = [];
+  for (let i=0; i<balance; i++) {
+    nfts.push({uri: tokenUris[i], id: tokenIds[i] });
+  }
+  console.log(nfts)
+  return nfts;
 }
 
 

@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import logo from './logo.svg';
 import QRCode from 'qrcode.react';
-import { getBalance, readNumber, setNumber } from './api/UseCaver';
+import { getBalance, readNumber, setNumber, fetchCardsOf } from './api/UseCaver';
 import * as KlipAPI from "./api/UseKlip";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import './market.css';
-import { Alert, Container } from "react-bootstrap";
+import { Alert, Container, Card } from "react-bootstrap";
+import { NFT_MARKET_CONTRACT_ADDRESS } from './constants';
 
 const DEFAULT_QR_CODE = 'DEFAULT';
 const DEFAULT_ADDRESS = "0x00";
@@ -17,8 +18,17 @@ function App() {
 
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
 
-  const fetchNFTs = () => {
-    
+
+  // NFT Market 컨트랙트에서 호출자의 NFT 조회
+  const fethMarketNFTs = async () => {
+    const _nfts = await fetchCardsOf(NFT_MARKET_CONTRACT_ADDRESS);    
+    setNfts(_nfts);
+  }
+
+  // NFT 컨트랙트에서 호출자의 NFT 조회
+  const fethMyNFTs = async () => {
+    const _nfts = await fetchCardsOf(myAddress);    
+    setNfts(_nfts);
   }
 
   // Klip API 사용하여 사용자 데이터 조회
@@ -52,6 +62,13 @@ function App() {
         >
           {myBalance}
         </Alert>
+        <br />
+        
+      </div>
+      <div className="container" style={{padding:0, width:"100%"}}>
+        {nfts.map((nft, index) => (
+          <Card.Img className="img-responsive" src={nfts[index].uri} />
+        ))}
       </div>
       <br />
       <Container 
@@ -64,7 +81,9 @@ function App() {
       >
         <QRCode value={qrvalue} size={256} style={{ margin: "auto" }} />
       </Container>
-      
+      <button onClick={ fethMyNFTs }>
+        NFT query
+      </button>
     </div>
   );
 }

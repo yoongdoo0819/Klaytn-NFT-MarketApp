@@ -17,6 +17,10 @@ function App() {
 
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
 
+  const fetchNFTs = () => {
+    
+  }
+
   // Klip API 사용하여 사용자 데이터 조회
   const getUserData = () => {
     KlipAPI.getAddress(setQrvalue, async (address) => {

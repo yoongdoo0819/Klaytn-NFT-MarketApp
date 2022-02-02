@@ -1,6 +1,7 @@
 import Caver from 'caver-js'; // webpack5 이슈 발생 시, webpack@4.44.2 / react-scripts@4.0.3로 다운그레이드 적용하면 해결 
-import StorageABI from '../abi/StorageABI.json';
-import {STORAGE_CONTRACT_ADDRESS, CHAIN_ID} from '../constants';
+//import StorageABI from '../abi/StorageABI.json';
+import KIP17TokenABI from '../abi/KIP17TokenABI.json';
+import {STORAGE_CONTRACT_ADDRESS, NFT_CONTRACT_ADDRESS, NFT_MARKET_CONTRACT_ADDRESS, CHAIN_ID} from '../constants';
 
 // 다음은 Klaytn API Service 사용을 위해 발급 받은 인증 정보
 const option = {
@@ -14,13 +15,16 @@ const option = {
 }
 
 const caver = new Caver(new Caver.providers.HttpProvider("https://node-api.klaytnapi.com/v1/klaytn", option));
-const StorageContract = new caver.contract(StorageABI, STORAGE_CONTRACT_ADDRESS); // 실행할 컨트랙트의 인터페이스와 주소
+const NFTContract = new caver.contract(KIP17TokenABI, NFT_CONTRACT_ADDRESS);
 
-//  Storage 컨트랙트의 retrieve 함수 실행 (조회만 하므로 개인키 필요 없음)
-export const readNumber = async () => {
-  const num = await StorageContract.methods.retrieve().call();
-  console.log(num)
+export const fetchCardsOf = async (address) => {
+  //  fetch balance
+
+  //  fetch token ids
+
+  //  fetch token uris
 }
+
 
 //  사용자가 보유한 KLAY 양 확인 
 export const getBalance = (address) => {
@@ -30,6 +34,16 @@ export const getBalance = (address) => {
     console.log(balance);
     return balance;
   })
+}
+
+/*
+
+const StorageContract = new caver.contract(StorageABI, STORAGE_CONTRACT_ADDRESS); // 실행할 컨트랙트의 인터페이스와 주소
+
+//  Storage 컨트랙트의 retrieve 함수 실행 (조회만 하므로 개인키 필요 없음)
+export const readNumber = async () => {
+  const num = await StorageContract.methods.retrieve().call();
+  console.log(num)
 }
 
 //  Storage 컨트랙트의 store 함수 실행 (write 작업이 요구되므로 함수 실행 호출자의 개인키 필요)
@@ -54,3 +68,4 @@ export const setNumber = async (newNumber) => {
   }
   
 }
+*/

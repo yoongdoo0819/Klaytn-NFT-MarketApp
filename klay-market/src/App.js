@@ -20,6 +20,15 @@ function App() {
   const [tab, setTab] = useState("MINT");
   const [mintImageUrl, setMintImageUrl] = useState("");
 
+  // NFT mint 기능
+  const onClickMint = async (uri) => {
+    if (myAddress === DEFAULT_ADDRESS) alert('NO ADDRESS');
+    const randomTokenId = parseInt(Math.random() * 1000000);
+    KlipAPI.mintCardWithURI(myAddress, randomTokenId, uri, setQrvalue, (result) => {
+      alert(JSON.stringify(result));
+    });
+  };
+
   // NFT Market 컨트랙트에서 호출자의 NFT 조회
   const fetchMarketNFTs = async () => {
     const _nfts = await fetchCardsOf(NFT_MARKET_CONTRACT_ADDRESS);    
@@ -99,7 +108,8 @@ function App() {
                     />
                   </Form.Group>
                   <br />
-                  <Button 
+                  <Button
+                    onClick={()=>{onClickMint(mintImageUrl)}}
                     variant="primary" 
                     style={{
                         backgroundColor:"#910000", 

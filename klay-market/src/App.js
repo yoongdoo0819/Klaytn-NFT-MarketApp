@@ -18,6 +18,7 @@ function App() {
 
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
   const [tab, setTab] = useState("MINT");
+  const [mintImageUrl, setMintImageUrl] = useState("");
 
   // NFT Market 컨트랙트에서 호출자의 NFT 조회
   const fetchMarketNFTs = async () => {
@@ -77,15 +78,36 @@ function App() {
 
         {/* 발행 페이지 */}
         {tab == "MINT" ? (
-          <div> 
-            <Card>
-              <Card.Body>
+          <div className="container" style={{padding:0, width:"100%"}}> 
+            <Card className="text-center" 
+                  style={{ color: "black", height: "500", borderColor: "#C5B358" }}
+            >
+              <Card.Body style={{ opacity: 0.9, backgroundColor: "black" }}>
+                {mintImageUrl !== "" ? (
+                  <Card.Img src={mintImageUrl} height={"50%"} />
+                ) : null}
                 <Form>
                   <Form.Group>
-                    <Form.Control />
+                    <Form.Control
+                    value={mintImageUrl}
+                    onChange={(e)=> {
+                      console.log(e.target.value);
+                      setMintImageUrl(e.target.value);
+                    }}
+                    type="text"
+                    placeholder="이미지 주소를 입력해주세요"
+                    />
                   </Form.Group>
                   <br />
-                  <Button>발행하기</Button>
+                  <Button 
+                    variant="primary" 
+                    style={{
+                        backgroundColor:"#910000", 
+                        borderColor:"#910000"
+                      }}
+                    >
+                      발행하기
+                  </Button>
                 </Form>
               </Card.Body>
             </Card>

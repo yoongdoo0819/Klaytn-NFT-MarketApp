@@ -45,7 +45,7 @@ export const setNumber = (number, setQrvalue) => {
 };
 
 //  Klip API 요청자 자신의 블록체인 주소 조회
-export const getAddress = (setQrvalue) => {
+export const getAddress = (setQrvalue, callback) => {
     
     axios.post(
         A2P_API_PREPARE_URL, {
@@ -68,6 +68,7 @@ export const getAddress = (setQrvalue) => {
                     //console.log(res.data.expiration_time);
                     //console.log(res.data.result);
                     console.log(`[Result] ${JSON.stringify(res.data.result)}`);
+                    callback(res.data.result.klaytn_address);
                     clearInterval(timerId);
                 }
             });

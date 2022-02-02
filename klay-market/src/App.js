@@ -6,12 +6,24 @@ import * as KlipAPI from "./api/UseKlip";
 import './App.css';
 
 const DEFAULT_QR_CODE = 'DEFAULT';
+const DEFAULT_ADDRESS = "0x00";
 function App() {
-  const [balance, setBalance] = useState("0");
+  const [nfts, setNfts] = useState([]);
+  const [myBalance, setMyBalance] = useState("0");
+  const [myAddress, setMyAddress] = useState(DEFAULT_ADDRESS);
+
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
 
   //readNumber();
   //getBalance('0x860ab241a263ee4445d6ee2cb6cc5c9d2d5cbcff');
+  
+  const getUserData = () => {
+    KlipAPI.getAddress(setQrvalue, async (address) => {
+      setMyAddress(address);
+      const _balance = await getBalance(address);
+      setMyBalance(_balance);
+    });
+  }
 
   const onClickgetAddress = () => {
     KlipAPI.getAddress(setQrvalue);
@@ -22,35 +34,11 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <button
-          onClick={() => {
-            onClickgetAddress();
-          }}
-        >
-          주소 가져오기
-        </button>
-        <button
-          onClick={() => {
-            onClicksetNumber();
-          }}
-        >
-          number 변경
-        </button>
-        <br></br>
-        <br></br>
-        <QRCode value={qrvalue} />
-        <p>{balance}</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div onClick={getUserData}>
+        잔고 : {myBalance}
+        주소 : {myAddress}
+      </div>
+      <QRCode value={qrvalue} />
     </div>
   );
 }

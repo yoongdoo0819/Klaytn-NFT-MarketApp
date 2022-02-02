@@ -3,7 +3,10 @@ import logo from './logo.svg';
 import QRCode from 'qrcode.react';
 import { getBalance, readNumber, setNumber } from './api/UseCaver';
 import * as KlipAPI from "./api/UseKlip";
+import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
+import './market.css';
+import { Alert, Container } from "react-bootstrap";
 
 const DEFAULT_QR_CODE = 'DEFAULT';
 const DEFAULT_ADDRESS = "0x00";
@@ -14,9 +17,7 @@ function App() {
 
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
 
-  //readNumber();
-  //getBalance('0x860ab241a263ee4445d6ee2cb6cc5c9d2d5cbcff');
-  
+  // Klip API 사용하여 사용자 데이터 조회
   const getUserData = () => {
     KlipAPI.getAddress(setQrvalue, async (address) => {
       setMyAddress(address);
@@ -25,20 +26,41 @@ function App() {
     });
   }
 
-  const onClickgetAddress = () => {
-    KlipAPI.getAddress(setQrvalue);
-  };
-  const onClicksetNumber = () => {
-    KlipAPI.setNumber(2000, setQrvalue);
-  };
-
   return (
     <div className="App">
-      <div onClick={getUserData}>
-        잔고 : {myBalance}
-        주소 : {myAddress}
+      <div style={{ backgroundColor: "gray", padding: 10}}>
+        <div 
+            style={{
+              fontSize: 30,
+              fontHeight: "bold",
+              paddingLeft: 5,
+              marginTop: 10,
+            }}
+          >
+            My Wallet
+        </div>
+        {myAddress}
+        <br />
+        <Alert 
+          onClick={getUserData}
+          variant={"balance"} 
+          style={{backgroundColor:"aliceblue", fontSize: 25, color: "black"}}
+        >
+          {myBalance}
+        </Alert>
       </div>
-      <QRCode value={qrvalue} />
+      <br />
+      <Container 
+        style={{ 
+          backgroundColor: "white", 
+          width:300, 
+          height:300, 
+          padding: 20,
+          }}
+      >
+        <QRCode value={qrvalue} size={256} style={{ margin: "auto" }} />
+      </Container>
+      
     </div>
   );
 }

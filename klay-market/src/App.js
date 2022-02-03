@@ -29,6 +29,28 @@ function App() {
     });
   };
 
+  //  NFT 판매 및 구매
+  const onClickCard = (id) => {
+    if (tab === 'WALLET') {
+      onClickMyCard(id);
+    } 
+    if (tab === 'MARKET') {
+      onClickMarketCard(id);
+    }
+  }
+
+  const onClickMyCard = (tokenId) => {
+    KlipAPI.listingCard(myAddress, tokenId, setQrvalue, (result) => {
+      alert(JSON.stringify(result));
+    });
+  };
+
+  const onClickMarketCard = (tokenId) => {
+    KlipAPI.buyCard(tokenId, setQrvalue, (result) => {
+      alert(JSON.stringify(result));
+    });
+  };
+
   // NFT Market 컨트랙트에서 호출자의 NFT 조회
   const fetchMarketNFTs = async () => {
     const _nfts = await fetchCardsOf(NFT_MARKET_CONTRACT_ADDRESS);    
@@ -79,9 +101,16 @@ function App() {
         {/* 갤러리(마켓 및 사용자 지갑) */}
         {tab == "MARKET" || tab == "WALLET" ? (
           <div className="container" style={{padding:0, width:"100%"}}>
-          {nfts.map((nft, index) => (
-            <Card.Img className="img-responsive" src={nfts[index].uri} />
-          ))}
+            {nfts.map((nft, index) => (
+              <Card.Img 
+              key={`imagekey${index}`} 
+                onClick={() => { 
+                    onClickCard(nft.id)
+                }} 
+                className="img-responsive" 
+                src={nfts[index].uri} 
+              />
+            ))}
           </div>
         ) : null}
 
@@ -172,7 +201,7 @@ function App() {
             <div 
               onClick={()=>{
                 setTab("WALLET");
-                fetchMarketNFTs();
+                fetchMyNFTs();
               }}
               className="row d-flex flex-column justify-content-center align-items-center"
             >

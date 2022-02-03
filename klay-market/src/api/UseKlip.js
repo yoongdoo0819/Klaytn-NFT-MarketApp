@@ -1,11 +1,47 @@
 import axios from "axios";
-import { NFT_CONTRACT_ADDRESS, STORAGE_CONTRACT_ADDRESS } from "../constants";
+import { NFT_CONTRACT_ADDRESS, NFT_MARKET_CONTRACT_ADDRESS, STORAGE_CONTRACT_ADDRESS } from "../constants";
 
 
 //  Klip API 사용 시 필요한 정보
 const A2P_API_PREPARE_URL = "https://a2a-api.klipwallet.com/v2/a2a/prepare";
 const APP_NAME = "KLAY_MARKET";
 
+//  판매대에 등록된 NFT를 구매
+export const buyCard = async (
+    tokenId, 
+    setQrvalue, 
+    callback
+) => {
+    const functionJson = '{ "constant": false, "inputs": [ { "name": "tokenId", "type": "uint256" }, { "name": "NFTAddress", "type": "address" } ], "name": "buyNFT", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }';
+
+    executeContract(
+        NFT_MARKET_CONTRACT_ADDRESS,
+        functionJson,
+        "10000000000000000",
+        `[\"${tokenId}\",\"${NFT_CONTRACT_ADDRESS}\"]`,
+        setQrvalue,
+        callback,
+    )
+};
+
+//  판매대에 판매할 NFT 등록
+export const listingCard = async (
+    fromAddress, 
+    tokenId, 
+    setQrvalue, 
+    callback
+) => {
+    const functionJson = '{ "constant": false, "inputs": [ { "name": "from", "type": "address" }, { "name": "to", "type": "address" }, { "name": "tokenId", "type": "uint256" } ], "name": "safeTransferFrom", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }';
+
+    executeContract(
+        NFT_CONTRACT_ADDRESS,
+        functionJson,
+        "0",
+        `[\"${fromAddress}\",\"${NFT_MARKET_CONTRACT_ADDRESS}\",\"${tokenId}\"]`,
+        setQrvalue,
+        callback,
+    )
+};
 
 //  mintCardWithURI 호출 이전에, addMinter를 통해 Minter를 먼저 등록시키지 않으면 발행할 수 없음
 export const mintCardWithURI = async (
